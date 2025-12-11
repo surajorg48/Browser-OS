@@ -24,6 +24,19 @@ const API_URL = {
   ART_INSTITUTE_OF_CHICAGO: "https://api.artic.edu/api/v1/artworks/search",
 };
 
+const isResourceOk = async (url: string): Promise<boolean> => {
+  try {
+    const { ok } = await fetch(url, {
+      ...HIGH_PRIORITY_REQUEST,
+      method: "HEAD",
+    });
+
+    return ok;
+  } catch {
+    return false;
+  }
+};
+
 export const wallpaperHandler: Record<string, WallpaperHandler> = {
   APOD: async ({ isAlt }) => {
     const response = await jsonFetch(
@@ -111,12 +124,8 @@ export const wallpaperHandler: Record<string, WallpaperHandler> = {
 
         if (image_id) {
           const url = `https://www.artic.edu/iiif/2/${image_id}/full/1686,/0/default.jpg`;
-          const { ok } = await fetch(url, {
-            ...HIGH_PRIORITY_REQUEST,
-            method: "HEAD",
-          });
 
-          if (ok) return url;
+          if (await isResourceOk(url)) return url;
         }
       } catch {
         // Ignore failure to get wallpaper
@@ -139,10 +148,16 @@ export const wallpaperHandler: Record<string, WallpaperHandler> = {
       wallpaperUrl: await maybeFetchArtwork(),
     };
   },
-  LOREM_PICSUM: () => ({
-    fallbackBackground: "",
-    newWallpaperFit: "fill",
-    updateTimeout: MILLISECONDS_IN_HOUR,
-    wallpaperUrl: `https://picsum.photos/seed/${Date.now()}/${viewWidth()}/${viewHeight()}`,
-  }),
+  LOREM_PICSUM: () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const createLoremPicsumUrl = (): string =>
+      `https://picsum.photos/seed/${Math.floor(Math.random() * Date.now())}/${viewWidth()}/${viewHeight()}`;
+
+    return {
+      fallbackBackground: createLoremPicsumUrl(),
+      newWallpaperFit: "fill",
+      updateTimeout: MILLISECONDS_IN_HOUR,
+      wallpaperUrl: createLoremPicsumUrl(),
+    };
+  },
 };
