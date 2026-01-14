@@ -286,6 +286,7 @@
 - Art Wallpapers
   - [MMoA](https://metmuseum.github.io/)
 - [spacekit](https://github.com/typpo/spacekit)
+- [ASCII Clouds](https://caidan.dev/portfolio/ascii_clouds/)
 - [twigl](https://github.com/doxas/twigl)
 - [UVCanvas](https://github.com/latentcat/uvcanvas)
 - [Google Easter Eggs](https://elgoog.im/)
