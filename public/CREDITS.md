@@ -30,6 +30,7 @@ This project is greatly augmented by code from the open source community. Thank 
 - [3D Maze](https://github.com/ibid-11962/Windows-95-3D-Maze-Screensaver)
 - [7z-wasm](https://github.com/use-strict/7z-wasm)
 - [ani-cursor](https://github.com/captbaritone/webamp/tree/master/packages/ani-cursor)
+- [Burn-My-Windows](https://github.com/Schneegans/Burn-My-Windows)
 - [Coastal Landscape](https://www.shadertoy.com/view/fstyD4)
 - [codecbox.js](https://github.com/duanyao/codecbox.js)
 - [decode-ico](https://github.com/LinusU/decode-ico)

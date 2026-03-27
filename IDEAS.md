@@ -268,8 +268,6 @@
 ## Visuals & Effects
 
 - [Frosted Glass](https://frosted-glass.shud.in/)
-- Window Animations
-  - [Burn My Windows](https://github.com/Schneegans/Burn-My-Windows) ([#358](https://github.com/Schneegans/Burn-My-Windows/discussions/358))
 - 3D
   - [noclip](https://noclip.website/)
   - [Object Viewer](https://rubenandrebarreiro.github.io/projects/threejs/3d-object-viewer-super-mario-bros/3d-object-viewer-super-mario-bros.html)
