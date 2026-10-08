@@ -1,8 +1,6 @@
-## 🌌 **daedalOS** 🌌
+## 🌌 **Browser-OS** 🌌
 
 ## _Desktop environment in the browser_
-
-![Screenshot](https://raw.githubusercontent.com/DustinBrett/daedalOS/refs/heads/main/public/screenshot.png?raw=true)
 
 > **⚡ Quick Run:**
 >
@@ -11,10 +9,6 @@
 > ```
 >
 > Then open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Feature Overview
-
-[![Feature Overview](https://img.youtube.com/vi/djCqHH0SCmA/mqdefault.jpg)](https://www.youtube.com/watch?v=djCqHH0SCmA)
 
 # System 🧠
 
@@ -129,7 +123,7 @@ In fullscreen the Windows key opens the Start Menu, Windows key combos work in p
 
 - Query parameter loading
   - Examples:
-    - `/?url=/CREDITS.md`
+    - `/?url=/README.md`
     - `/?app=Browser`
 
 # Apps 🧪
@@ -197,7 +191,7 @@ In fullscreen the Windows key opens the Start Menu, Windows key combos work in p
 - Automatic public/private key creation
 - Sign in with a [NIP-07](https://github.com/nostr-protocol/nips/blob/master/07.md) extension or nsec
 - Message requests, spam folder, bulk delete & blocking
-- Default contacts from the author npub & the site's `/.well-known/nostr.json` ([NIP-05](https://github.com/nostr-protocol/nips/blob/master/05.md))
+- Default contacts from the site's `/.well-known/nostr.json` ([NIP-05](https://github.com/nostr-protocol/nips/blob/master/05.md))
 
 ### [Monaco Editor](https://microsoft.github.io/monaco-editor/)
 

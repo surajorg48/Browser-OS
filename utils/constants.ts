@@ -377,12 +377,12 @@ export const DEFAULT_SCROLLBAR_WIDTH = 17;
 export const TASKBAR_HEIGHT = 30;
 
 export const PACKAGE_DATA = {
-  alias: "daedalOS",
+  alias: "Browser-OS",
   author: {
-    email: "dustinbrett@gmail.com",
-    name: "Dustin Brett",
-    npub: "npub10l3amzckl56834tgsvdafrg5dtux9aam9maqvudjfsjtnjjdduaqj0sehy",
-    url: "https://dustinbrett.com",
+    email: "surajorg48@gmail.com",
+    name: "surajorg48",
+    npub: "",
+    url: "https://github.com/surajorg48/Browser-OS",
   },
   description: "Desktop environment in the browser",
   license: "MIT",

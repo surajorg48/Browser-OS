@@ -30,8 +30,8 @@ export const SURF_TO_MISC = {
 export const bookmarks: Bookmark[] = [
   {
     icon: FAVICON_BASE_PATH,
-    name: "daedalOS",
-    url: "https://dustinbrett.com/",
+    name: "Browser-OS",
+    url: "http://localhost:3000/",
   },
   {
     icon: "/System/Icons/Favicons/dir.webp",
