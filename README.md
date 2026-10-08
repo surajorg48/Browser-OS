@@ -4,6 +4,14 @@
 
 ![Screenshot](https://raw.githubusercontent.com/DustinBrett/daedalOS/refs/heads/main/public/screenshot.png?raw=true)
 
+> **⚡ Quick Run:**
+>
+> ```sh
+> yarn install && yarn build:prebuild && yarn dev
+> ```
+>
+> Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
 ### Feature Overview
 
 [![Feature Overview](https://img.youtube.com/vi/djCqHH0SCmA/mqdefault.jpg)](https://www.youtube.com/watch?v=djCqHH0SCmA)
@@ -125,6 +133,16 @@ In fullscreen the Windows key opens the Start Menu, Windows key combos work in p
     - `/?app=Browser`
 
 # Apps 🧪
+
+### [AWS S3 File Manager](components/apps/S3FileManager) ☁️
+
+- Cloud file management directly within the browser desktop
+- Connect to any AWS S3 bucket (with custom region and endpoint support for MinIO, LocalStack, Cloudflare R2, Wasabi, etc.)
+- Browse folders, upload files, download files, create new folders, and delete objects
+- Generate pre-signed download URLs on demand
+- **Monaco Editor Cloud Sync**: Open S3 files directly in Monaco Editor and save back with automated cloud sync
+- **Context Menu Integration**: Right-click any file to "Upload to AWS S3" or right-click any folder to "Open AWS S3 Manager"
+- **Client-Side Security**: Credentials are stored strictly in client-side `localStorage` (`daedalos_aws_s3_config`) — no credentials in `.env`, server logs, or git commits
 
 ### [BoxedWine](http://www.boxedwine.org/) (**_.exe, .zip_**)
 
@@ -298,28 +316,56 @@ In fullscreen the Windows key opens the Start Menu, Windows key combos work in p
 
 - Port of the classic first-person shooter
 
-# Try It 🚀
+# How to Run & Deploy 🚀
 
-### Requirements
+### System Prerequisites
 
-- [Node.js](https://nodejs.org/en/download/) 22+
-- [Yarn](https://classic.yarnpkg.com/)
+- **[Node.js](https://nodejs.org/en/download/)**: Version 22.x or higher
+- **[Yarn](https://classic.yarnpkg.com/)**: Version 1.22+ (Classic)
+- **Git**
 
-### Development
+---
 
-`build:prebuild` generates the file system and search indexes the app loads at startup, so re-run it after adding or removing files in `public/`.
+### Step-by-Step Local Setup
+
+#### 1. Clone the Repository
+
+```sh
+git clone https://github.com/surajorg48/Browser-OS.git
+cd Browser-OS
+```
+
+#### 2. Install Dependencies
 
 ```sh
 yarn install
+```
+
+#### 3. Run Pre-Build Script (Mandatory)
+
+Before starting the development server or building, you **must** run `build:prebuild`. This script scans the `public/` directory and generates the required filesystem indexes (`public/.index/fs.9p.json`) and search databases that the virtual OS mounts at startup.
+
+```sh
 yarn build:prebuild
+```
+
+> **Note:** Re-run `yarn build:prebuild` anytime you add, delete, or modify files inside `public/`.
+
+#### 4. Start Development Server
+
+```sh
 yarn dev
 ```
 
-Then open http://localhost:3000.
+Open [http://localhost:3000](http://localhost:3000) in your browser. The browser desktop will boot up immediately.
 
-### Production
+---
 
-Builds a static export to `out/` and serves it on http://localhost:3000.
+### Production Deployment
+
+#### Static Export Build
+
+Builds an optimized static HTML/CSS/JS export to `out/` and serves it locally:
 
 ```sh
 yarn install
@@ -327,17 +373,99 @@ yarn build
 yarn serve
 ```
 
-### Docker
+Open [http://localhost:3000](http://localhost:3000).
+
+#### Docker Deployment
+
+You can also run Browser-OS inside a Docker container:
 
 ```sh
-docker build -t daedalos .
-docker run -dp 3000:3000 --rm --name daedalos daedalos
+docker build -t browser-os .
+docker run -dp 3000:3000 --rm --name browser-os browser-os
 ```
 
-### Tests & Linting
+---
 
-```sh
-yarn test # Jest unit tests
-yarn e2e  # Playwright end-to-end tests (run `yarn playwright install` once first)
-yarn lint # Oxlint
+### AWS S3 Cloud Integration Setup ☁️
+
+Browser-OS features a built-in **AWS S3 File Manager** app that lets you manage cloud storage, upload/download files, and edit cloud files directly in Monaco Editor.
+
+#### 🔒 Security Architecture (Zero Secret Keys in Code)
+
+- **No secret keys or `.env` files are required or tracked in this repository.**
+- All AWS credentials (Access Key ID, Secret Access Key, Session Token, Region, and Bucket) are entered directly into the client-side Connection Dialog and stored strictly in the user's browser `localStorage` (`daedalos_aws_s3_config`).
+- All AWS SDK API requests are executed directly from your browser to Amazon S3 via `@aws-sdk/client-s3`.
+
+#### S3 Bucket CORS Configuration
+
+Because requests are sent directly from the browser to Amazon S3, your S3 bucket must have CORS enabled.
+
+1. Go to the **AWS S3 Console** → select your bucket → **Permissions** tab.
+2. Scroll to **Cross-origin resource sharing (CORS)** and paste the following configuration:
+
+```json
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "AllowedOrigins": [
+      "http://localhost:3000",
+      "https://*.vercel.app",
+      "https://*.github.io"
+    ],
+    "ExposeHeaders": ["ETag", "x-amz-server-side-encryption"]
+  }
+]
 ```
+
+#### Recommended IAM Policy
+
+For least-privilege security, create an IAM user with only the necessary S3 permissions for the target bucket:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BrowserOSS3Access",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-bucket-name",
+        "arn:aws:s3:::your-bucket-name/*"
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### Available Scripts
+
+| Command               | Description                                                                |
+| --------------------- | -------------------------------------------------------------------------- |
+| `yarn install`        | Installs project dependencies                                              |
+| `yarn build:prebuild` | Generates file system tree and search indexes in `public/.index/`          |
+| `yarn dev`            | Runs the Next.js development server on `http://localhost:3000`             |
+| `yarn build`          | Generates the static export bundle in `out/`                               |
+| `yarn serve`          | Serves the static export locally                                           |
+| `yarn test`           | Runs Jest unit tests                                                       |
+| `yarn lint`           | Runs Oxlint linter for code quality                                        |
+| `yarn e2e`            | Runs Playwright end-to-end tests (requires `yarn playwright install` once) |
+
+---
+
+### Troubleshooting
+
+- **Virtual Desktop shows empty icons or filesystem errors:**
+  Ensure you ran `yarn build:prebuild`. If files were added to `public/`, run `yarn build:prebuild` again.
+- **S3 Connection fails with Network Error or CORS Error:**
+  Verify that your AWS S3 bucket has the CORS permissions configured as described in the [S3 Bucket CORS Configuration](#s3-bucket-cors-configuration) section above.
+- **Port 3000 is already in use:**
+  Run `yarn dev -p 3001` or terminate the process occupying port 3000.

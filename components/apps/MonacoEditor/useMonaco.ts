@@ -93,6 +93,20 @@ const useMonaco = ({
           await writeFile(saveUrl, saveData, true);
           updateFolder(dirname(saveUrl), basename(saveUrl));
           prependFileToTitle(basename(saveUrl));
+
+          if (saveUrl.startsWith("/Users/Public/AWS S3/")) {
+            try {
+              const { getStoredS3Config, putS3Object } =
+                await import("utils/s3/service");
+              const s3Config = getStoredS3Config();
+              if (s3Config) {
+                const s3Key = saveUrl.replace(/^\/Users\/Public\/AWS S3\//, "");
+                await putS3Object(s3Config, s3Key, saveData);
+              }
+            } catch {
+              // Ignore S3 sync errors on save
+            }
+          }
         }
       }
     });

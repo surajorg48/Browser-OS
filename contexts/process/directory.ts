@@ -298,6 +298,16 @@ const directory: Processes = {
     lockAspectRatio: true,
     title: "Space Cadet",
   },
+  S3FileManager: {
+    backgroundColor: "#191919",
+    Component: dynamic(() => import("components/apps/S3FileManager")),
+    defaultSize: {
+      height: 520,
+      width: 740,
+    },
+    icon: "/System/Icons/mounted.webp",
+    title: "AWS S3 File Manager",
+  },
   StableDiffusion: {
     backgroundColor: "rgb(235, 251, 247)",
     Component: dynamic(() => import("components/apps/StableDiffusion")),

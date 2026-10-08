@@ -463,6 +463,11 @@ const useFolderContextMenu = (
               action: () => open("Terminal", { url }),
               label: "Open Terminal here",
             },
+            {
+              action: () => open("S3FileManager"),
+              icon: "/System/Icons/mounted.webp",
+              label: "Open AWS S3 Manager",
+            },
             MENU_SEPERATOR,
             {
               action: () => pasteToFolder(event),

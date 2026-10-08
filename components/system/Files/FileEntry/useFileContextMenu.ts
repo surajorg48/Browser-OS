@@ -174,6 +174,34 @@ const useFileContextMenu = (
       menuItems.push(
         { action: () => moveEntries(absoluteEntries()), label: "Cut" },
         { action: () => copyEntries(absoluteEntries()), label: "Copy" },
+        MENU_SEPERATOR,
+        {
+          action: () => {
+            absoluteEntries().forEach(async (entry) => {
+              try {
+                const { getStoredS3Config, putS3Object } =
+                  await import("utils/s3/service");
+                const s3Config = getStoredS3Config();
+                if (!s3Config) {
+                  open("S3FileManager");
+                  return;
+                }
+                const fileData = await readFile(entry);
+                const s3Key = basename(entry);
+                await putS3Object(s3Config, s3Key, fileData);
+                alert(
+                  `✓ Uploaded "${s3Key}" to AWS S3 bucket "${s3Config.bucket}"`
+                );
+              } catch (err: unknown) {
+                const message =
+                  err instanceof Error ? err.message : "Unknown error";
+                alert(`Upload to S3 failed: ${message}`);
+              }
+            });
+          },
+          icon: "/System/Icons/mounted.webp",
+          label: "Upload to AWS S3",
+        },
         MENU_SEPERATOR
       );
 
